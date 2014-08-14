@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MySchoolCommunity" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=OMAR-PC\SQLEXPRESS;Initial Catalog=MySchoolCommunity;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="MySchoolCommunityConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="u_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="User_Children" Member="Children" ThisKey="u_id" OtherKey="u_id" Type="Children" Cardinality="One" />
+      <Association Name="User_Parent" Member="Parent" ThisKey="u_id" OtherKey="u_id" Type="Parent" Cardinality="One" />
+      <Association Name="User_School" Member="School" ThisKey="u_id" OtherKey="u_id" Type="School" Cardinality="One" />
+      <Association Name="User_Expert" Member="Expert" ThisKey="u_id" OtherKey="u_id" Type="Expert" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Children" Member="Childrens">
+    <Type Name="Children">
+      <Column Name="u_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="birth_date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="age" Type="System.Int32" DbType="Int" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="y_t" Type="System.Boolean" DbType="Bit" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="school_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="school_status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="User_Children" Member="User" ThisKey="u_id" OtherKey="u_id" Type="User" IsForeignKey="true" />
+      <Association Name="School_Children" Member="School" ThisKey="school_id" OtherKey="u_id" Type="School" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Parents" Member="Parents">
+    <Type Name="Parent">
+      <Column Name="u_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="job" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="house_number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="st_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="country" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="User_Parent" Member="User" ThisKey="u_id" OtherKey="u_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Schools" Member="Schools">
+    <Type Name="School">
+      <Column Name="u_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ed_system" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="house_number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="st_name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="country" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="School_Children" Member="Childrens" ThisKey="u_id" OtherKey="school_id" Type="Children" />
+      <Association Name="User_School" Member="User" ThisKey="u_id" OtherKey="u_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Experts" Member="Experts">
+    <Type Name="Expert">
+      <Column Name="u_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="field" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="degree" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Association Name="User_Expert" Member="User" ThisKey="u_id" OtherKey="u_id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.create_child" Method="create_child">
+    <Parameter Name="username" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="schoolname" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="birthdate" Type="System.DateTime" DbType="SmallDateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.create_parent" Method="create_parent">
+    <Parameter Name="username" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="email" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="job" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="house_number" Type="System.Int32" DbType="Int" />
+    <Parameter Name="st_name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="area" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="country" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="phone" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.create_school" Method="create_school">
+    <Parameter Name="username" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="ed_system" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="house_number" Type="System.Int32" DbType="Int" />
+    <Parameter Name="st_name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="area" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="country" Type="System.String" DbType="VarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.user_type" Method="user_type" IsComposable="true">
+    <Parameter Name="u_id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Char" />
+  </Function>
+  <Function Name="dbo.are_friends" Method="are_friends" IsComposable="true">
+    <Parameter Name="user1" Type="System.Int32" DbType="Int" />
+    <Parameter Name="user2" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Boolean" />
+  </Function>
+  <Function Name="dbo.retrieve_name" Method="retrieve_name" IsComposable="true">
+    <Parameter Name="uid" Type="System.Int32" DbType="Int" />
+    <Return Type="System.String" />
+  </Function>
+</Database>
